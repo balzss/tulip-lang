@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title>Tulip Lang</title>
+        <link rel="icon" type="image/png" href="static/img/favicon.png" />
+
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+            }
+
+            body {
+                background-color: #ddd;
+                font-size: 20px;
+                font-family: 'Roboto Mono', monospace;
+                margin: 0;
+            }
+
+            .container {
+                padding: 48px;
+                display: flex;
+                max-height: 60%;
+                height: 60%;
+                box-sizing: border-box;
+                justify-content: space-between;
+            }
+
+            #in {
+                box-sizing: border-box;
+                padding: 24px;
+                border-radius: 8px;
+                border: none;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+                width: 48%;
+                height: 100%;
+                resize: none;
+                font-size: inherit;
+                outline: 0;
+            }
+
+            #out {
+                background-color: #455A64;
+                box-sizing: border-box;
+                padding: 24px;
+                border-radius: 8px;
+                border: none;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+                width: 48%;
+                height: 100%;
+                font-size: inherit;
+                color: white;
+            }
+
+            #compile:hover {
+                box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+            }
+
+            #compile {
+                outline: 0;
+                transition: all 0.2s ease;
+                text-transform: uppercase;
+                font-size: inherit;
+                color: white;
+                background-color: #e53935;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+                border-radius: 8px;
+                padding: 16px 24px;
+                border: none;
+                cursor: pointer;
+            }
+
+            #btn-container {
+                display: flex;
+                justify-content: center;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <textarea name="in" id="in"></textarea>
+            <code id="out"></code>
+        </div>
+        <div id="btn-container">
+            <button id="compile">compile</button>
+        </div>
+
+        <script src="static/js/astring.min.js" charset="utf-8"></script>
+        <script src="static/js/parser.js" charset="utf-8"></script>
+        <script src="static/js/main.js" charset="utf-8"></script>
+    </body>
+</html>

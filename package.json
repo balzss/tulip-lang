@@ -1,0 +1,17 @@
+{
+  "name": "tulip-lang",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "astring": "^1.2.0",
+    "pegjs": "^0.10.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "parse": "pegjs --format globals --export-var parser -o static/js/parser.js parser.pegjs"
+  },
+  "author": "",
+  "license": "ISC"
+}
