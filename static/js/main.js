@@ -4,6 +4,19 @@ function sum(){
     return args.reduce((a, b)=>a + b, 0)
 } 
 
+function cat(){
+    const args = Array.prototype.slice.call(arguments);
+    return args.reduce((a, b)=>a + b, '')
+} 
+
+function diff(){
+    const args = Array.prototype.slice.call(arguments);
+    return args.reduce((a, b)=>a - b, 0)
+} 
+
+let max = Math.max;
+let min = Math.min;
+
 function print(x){
     document.querySelector('#log').innerHTML += '<pre><span>$</span>' + x + '</pre>';
 }
