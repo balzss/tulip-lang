@@ -1,9 +1,19 @@
+const stdLib = `
+function sum(){
+    const args = Array.prototype.slice.call(arguments);
+    return args.reduce((a, b)=>a + b, 0)
+} 
+
+function print(x){
+    document.querySelector('#log').innerHTML += '<pre><span>$</span>' + x + '</pre>';
+}
+`
 document.querySelector('#compile').addEventListener('click', compile);
 document.querySelector('#in').value = `(let a 1)
 (let b (sum a 2))
-(console.log b)
+(print b)
 (let (myFun x y) (sum x y))
-(console.log (myFun b 15))`;
+(print (myFun b 15))`;
 compile();
 
 function compile(){
@@ -14,6 +24,7 @@ function compile(){
     const result = astring.generate(ast);
     document.querySelector('#out').innerText = result;
 
-    extendedResult = 'function sum(){const args = Array.prototype.slice.call(arguments); return args.reduce((a, b)=>a + b, 0)} ' + result;
+    document.querySelector('#log').innerHTML = '';
+    extendedResult = stdLib + result;
     eval(extendedResult);
 }
