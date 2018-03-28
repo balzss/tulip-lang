@@ -4,6 +4,10 @@ function sum(){
     return args.reduce((a, b)=>a + b, 0)
 } 
 
+function map(fn, list){
+    return list.map(fn);
+}
+
 function cat(){
     const args = Array.prototype.slice.call(arguments);
     return args.reduce((a, b)=>a + b, '')
@@ -44,7 +48,7 @@ let
     myFun x y
     sum x y
 
-print 
+print
     myFun b 15`;
 compile();
 
@@ -79,12 +83,16 @@ function indentPreprocessor(input){
     let resultString = '';
 
     for(let i = 0; i < lines.length - 1; i++){
-        resultString += '    '.repeat(lines[i].indentLevel) + '(' + lines[i].content;
+        resultString += '    '.repeat(lines[i].indentLevel) + '(';
+        resultString += lines[i].content;
+
         if(lines[i + 1].relativeIndent <= 0){
             resultString += ')'.repeat(lines[i+1].relativeIndent*(-1) + 1);
         }
+
         resultString += '\n';
     }
 
+    console.log(resultString);
     return resultString;
 }
