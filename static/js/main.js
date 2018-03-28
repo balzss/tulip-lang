@@ -33,30 +33,31 @@ function diff(){
 let max = Math.max;
 let min = Math.min;
 
-function print(x){
-    document.querySelector('#log').innerHTML += '<pre><span>$</span>' + x + '</pre>';
+function print(){
+    const args = Array.prototype.slice.call(arguments);
+    document.querySelector('#log').innerHTML += '<pre><span>$</span>' + cat(args) + '</pre>';
 }
 `
 document.querySelector('#compile').addEventListener('click', compile);
-document.querySelector('#in').value = `let a 1
-let b
-    sum a 2
+document.querySelector('#in').value = `(let a 1)
+(let b
+    (sum a 2))
 
-print b
+(print b)
 
-let 
-    myFun x y
-    sum x y
+(let 
+    (myFun x y)
+    (sum x y))
 
-print
-    myFun b 15`;
+(print
+    (myFun b 15))`;
 compile();
 
 function compile(){
     const codeToCompile = document.querySelector('#in').value;
-    const unindented = indentPreprocessor(codeToCompile);
+    // const unindented = indentPreprocessor(codeToCompile);
 
-    const ast = parser.parse(unindented);
+    const ast = parser.parse(codeToCompile);
     // console.log(ast);
     const result = astring.generate(ast);
     document.querySelector('#out').innerText = result;
@@ -83,8 +84,18 @@ function indentPreprocessor(input){
     let resultString = '';
 
     for(let i = 0; i < lines.length - 1; i++){
-        resultString += '    '.repeat(lines[i].indentLevel) + '(';
-        resultString += lines[i].content;
+        if(lines[i].content[0] == '.'){
+            lines[i].content = lines[i].content.replace(/\./g, '');
+            resultString = resultString.slice(0, -2);
+        } else {
+            resultString += '    '.repeat(lines[i].indentLevel) + '(';
+        }
+
+        if(lines[i].content.includes(':')){
+            resultString += lines[i].content.replace(/:/g, '(') + ')'.repeat(lines[i].content.match(/:/g).length);
+        } else {
+            resultString += lines[i].content;
+        }
 
         if(lines[i + 1].relativeIndent <= 0){
             resultString += ')'.repeat(lines[i+1].relativeIndent*(-1) + 1);
