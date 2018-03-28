@@ -58,7 +58,7 @@ function compile(){
     // const unindented = indentPreprocessor(codeToCompile);
 
     const ast = parser.parse(codeToCompile);
-    // console.log(ast);
+    console.log(ast);
     const result = astring.generate(ast);
     document.querySelector('#out').innerText = result;
 

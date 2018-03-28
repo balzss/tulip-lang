@@ -1,19 +1,28 @@
 Start
-	= s:Sexp* {return { type: "Program", body: s} }
+    = s:Sexp* {return { type: "Program", body: s} }
 
 Sexp "s-expression"
-	= _ "(" _ body:(VariableDeclaration / FunctionDeclaration / Conditional / CallExpression) _ ")" _ { return body}
+    = _ "(" _ body:(VariableDeclaration / FunctionDeclaration / Conditional / IfExpression / CallExpression) _ ")" _ { return body}
+
+IfExpression "if expression"
+    = _ "if" _ "(" test:T consequent:T ")" alternate:T _ {
+        return {
+            type: "ConditionalExpression",
+            test: test,
+            consequent: consequent,
+            alternate: alternate
+        };
+    }
 
 Conditional "conditional"
-	= "cond" r:Clause {
-    	return r;
+    = "cond" r:Clause {
+        return r;
     }
 
 Clause "conditional clause"
-    = _ "(" test:T consequent:T ")" alternate:(Else / Clause)? _ {
-        var x = alternate.type == 'undefined' ? alternate[4] : alternate;
+    = _ "(" test:T consequent:T ")" alternate:(Else / Clause) _ {
         return {
-        	type: "ConditionalExpression",
+            type: "ConditionalExpression",
             test: test,
             consequent: consequent,
             alternate: alternate
@@ -27,7 +36,7 @@ Else "else clause"
 
 VariableDeclaration "variable declaration" 
     = "let" id:Identifier value:T { 
-    	return {
+        return {
             type: "VariableDeclaration",
             declarations: [
                 {
@@ -42,42 +51,42 @@ VariableDeclaration "variable declaration"
 
 FunctionDeclaration "function declaration" 
     = "let" _ "(" id:Identifier params:Identifier+ ")" value:T { 
-    	return {
+        return {
             type: "FunctionDeclaration",
             id: id,
             params: params,
             body: {
-            	type: "BlockStatement",
+                type: "BlockStatement",
                 body: [{
-                	type: "ReturnStatement",
+                    type: "ReturnStatement",
                     argument: value
                 }]
             }
         };
     }
-  
+
 CallExpression "call expression"
     = operator:Word params:T+ {
-    	return {
-        	type: "CallExpression",
+        return {
+            type: "CallExpression",
             callee: {
-            	type: "Identifier",
+                type: "Identifier",
                 name:operator
             },
-        	arguments: params
-    	}
+            arguments: params
+        }
     }
 
 T "thing"
     = _ body:(ArrayExpression / Integer / String / Identifier / Sexp) _ {
-    	return body
+        return body
     }
 
 Integer "integer"
     = [0-9]+ {
-    	return {
-        	type: "Literal",
-        	value: parseInt(text(), 10)
+        return {
+            type: "Literal",
+            value: parseInt(text(), 10)
         }
     }
 
@@ -89,22 +98,22 @@ Word "word"
 
 String "string"
     = "'" [^']* "'" {
-    	return {
-        	type: "Literal",
-           	raw: text()
+        return {
+            type: "Literal",
+            raw: text()
         }
     }
-  
+
 Identifier "identifier"
     = name:Word {
-    	return {
-        	type: "Identifier",
+        return {
+            type: "Identifier",
             name: name
         }
     }
 
 ArrayExpression "array expression"
-	= _ "[" elems:T* "]" _ {
+    = _ "[" elems:T* "]" _ {
         return {
             type: "ArrayExpression",
             elements: elems
